@@ -1,6 +1,6 @@
 # Fluttercat
 
-Fluttercat è un'app mobile sviluppata in **Flutter** per interagire con un'istanza locale di **Cheshire Cat AI (lo Stregatto)**.  
+Fluttercat è un'app mobile sviluppata in **Flutter** per interagire con un'istanza locale di **Cheshire Cat AI**.  
 
 ---
 

@@ -41,8 +41,21 @@ Segui questi passaggi per configurare e avviare l'app:
    ```bash
    flutter pub get
 3. Esegui l'app
+
    ```bash
    flutter run
+
+---
+
+
+## Riferimenti
+
+- [Documentazione ufficiale di Cheshire Cat AI](https://cheshire-cat-ai.github.io/docs/)
+- [Sito ufficiale di Flutter](https://flutter.dev)
+- [Guida all'installazione di Flutter](https://docs.flutter.dev/get-started/install)
+
+---
+
 
 
    

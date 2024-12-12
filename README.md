@@ -38,9 +38,11 @@ Segui questi passaggi per configurare e avviare l'app:
    cd fluttercat
 
 2. Installa le dipendenze
-   ```flutter pub get
+   ```bash
+   flutter pub get
 3. Esegui l'app
-   ```flutter run
+   ```bash
+   flutter run
 
 
    

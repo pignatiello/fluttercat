@@ -22,7 +22,10 @@ class _ChatPageState extends State<ChatPage> {
       setState(() {
         _messages.add("Tu: $message");
       });
-
+    
+      //Cancella immediatamente il testo scritto nell'input
+      _messageController.clear();
+      
       try {
         final response = await http.post(
           Uri.parse('http://localhost:1865/message'),

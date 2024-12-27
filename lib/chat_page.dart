@@ -1,62 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'services/WebSocketService.dart';
 
 class ChatPage extends StatefulWidget {
-  final String accessToken;
-
-  const ChatPage({Key? key, required this.accessToken}) : super(key: key);
-
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final List<String> _messages = []; // Lista dei messaggi
+  late WebSocketService _webSocketService;
   final TextEditingController _messageController = TextEditingController();
+  final List<String> _messages = [];
 
-  void _sendMessage() async {
-    final message = _messageController.text.trim();
+  @override
+  void initState() {
+    super.initState();
+    _webSocketService = WebSocketService();
+    _webSocketService.connect('ws://localhost:1865/ws');
 
-    if (message.isNotEmpty) {
+    // Ascolta i messaggi dal server
+    _webSocketService.messages.listen((message) {
       setState(() {
-        _messages.add("Tu: $message");
+        // intero messaggio
+        // _messages.add('Server: ${message.toString()}');
+        // Estrai solo i campi content e tool-name
+        final content = message['content'] ?? 'Nessun contenuto';
+
+        // Formatta il messaggio
+        _messages.add('Contenuto: $content');
+
+        // Accedi alla sezione 'why'
+        final why = message['why'];
+
+        // Estrai il valore da 'input'
+        //final input = why?['input'] ?? 'Nessun input';
+
+        // Estrai il primo valore da 'intermediate_steps'
+        final intermediateSteps = why?['intermediate_steps'];
+        final firstStep =
+            (intermediateSteps is List && intermediateSteps.isNotEmpty)
+                ? intermediateSteps.first[0]
+                : 'Nessun passaggio intermedio';
+
+        // Aggiungi i risultati alla chat
+        //_messages.add('Input: $input');
+        _messages.add('Primo Passaggio: $firstStep');
       });
-    
-      //Cancella immediatamente il testo scritto nell'input
-      _messageController.clear();
-      
-      try {
-        final response = await http.post(
-          Uri.parse('http://localhost:1865/message'),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${widget.accessToken}',
-          },
-          body: jsonEncode({'text': message}),
-        );
+    });
+  }
 
-        if (response.statusCode == 200) {
-          final data = jsonDecode(response.body);
-          final reply = data['content'];
-
-          setState(() {
-            _messages.add("FlutterCat: $reply");
-          });
-        } else {
-          setState(() {
-            _messages.add("Errore dal server: ${response.statusCode}");
-          });
-        }
-      } catch (e) {
-        setState(() {
-          _messages.add("Errore di connessione: $e");
-        });
-      }
-
-      // Pulisce il campo di input
-      _messageController.clear();
+  void _sendMessage() {
+    final message = _messageController.text.trim();
+    if (message.isNotEmpty) {
+      _webSocketService.sendMessage({'text': message});
+      setState(() {
+        _messages.add('Tu: $message');
+        _messageController.clear();
+      });
     }
+  }
+
+  @override
+  void dispose() {
+    _webSocketService.close();
+    super.dispose();
   }
 
   @override

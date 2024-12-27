@@ -53,6 +53,9 @@ Ecco un'anteprima dell'app Fluttercat:
 
 <img src="iphone.png" alt="Screenshot dell'app" width="300">
 
+Puoi usare i plugin
+
+<img src="ws-plugin.png" alt="Screenshot dell'app" width="300">
 
 ---
 

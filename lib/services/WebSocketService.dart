@@ -22,15 +22,19 @@ class WebSocketService {
           _messageController.add(decodedMessage);
         },
         onError: (error) {
+          // ignore: avoid_print
           print('Errore WebSocket: $error');
         },
         onDone: () {
+          // ignore: avoid_print
           print('WebSocket chiuso');
         },
       );
 
+      // ignore: avoid_print
       print('Connesso a WebSocket: $url');
     } catch (e) {
+      // ignore: avoid_print
       print('Errore durante la connessione al WebSocket: $e');
     }
   }
@@ -39,8 +43,10 @@ class WebSocketService {
   void sendMessage(Map<String, dynamic> message) {
     try {
       _channel.sink.add(jsonEncode(message));
+      // ignore: avoid_print
       print('Messaggio inviato: $message');
     } catch (e) {
+      // ignore: avoid_print
       print('Errore durante l\'invio del messaggio: $e');
     }
   }
@@ -49,6 +55,7 @@ class WebSocketService {
   void close() {
     _channel.sink.close();
     _messageController.close();
+    // ignore: avoid_print
     print('Connessione WebSocket chiusa');
   }
 }

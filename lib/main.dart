@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'chat_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
               Colors.white, // Colore del testo e delle icone nella barra
         ),
       ),
-      home: ChatPage(),
+      home: const ChatPage(),
     );
   }
 }

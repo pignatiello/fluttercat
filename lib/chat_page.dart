@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'services/WebSocketService.dart';
 
 class ChatPage extends StatefulWidget {
+  const ChatPage({super.key});
+
   @override
   _ChatPageState createState() => _ChatPageState();
 }
@@ -20,30 +22,11 @@ class _ChatPageState extends State<ChatPage> {
     // Ascolta i messaggi dal server
     _webSocketService.messages.listen((message) {
       setState(() {
-        // intero messaggio
-        // _messages.add('Server: ${message.toString()}');
-        // Estrai solo i campi content e tool-name
-        final content = message['content'] ?? 'Nessun contenuto';
-
-        // Formatta il messaggio
-        _messages.add('Contenuto: $content');
-
-        // Accedi alla sezione 'why'
-        final why = message['why'];
-
-        // Estrai il valore da 'input'
-        //final input = why?['input'] ?? 'Nessun input';
-
-        // Estrai il primo valore da 'intermediate_steps'
-        final intermediateSteps = why?['intermediate_steps'];
-        final firstStep =
-            (intermediateSteps is List && intermediateSteps.isNotEmpty)
-                ? intermediateSteps.first[0]
-                : 'Nessun passaggio intermedio';
-
-        // Aggiungi i risultati alla chat
-        //_messages.add('Input: $input');
-        _messages.add('Primo Passaggio: $firstStep');
+        // Mostra solo i messaggi di tipo "chat" con campo "text"
+        if (message['type'] == 'chat' && message['text'] != null) {
+          _messages.add(message['text']);
+        }
+        // Ignora tutti gli altri tipi di messaggio
       });
     });
   }
@@ -116,6 +99,7 @@ class _ChatPageState extends State<ChatPage> {
                 color: Colors.grey[200],
                 boxShadow: [
                   BoxShadow(
+                    // ignore: deprecated_member_use
                     color: Colors.grey.withOpacity(0.5),
                     offset: const Offset(0, -1),
                     blurRadius: 3.0,
